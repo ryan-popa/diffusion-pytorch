@@ -4,8 +4,6 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
-
-# VAE Architecture (as provided previously)
 class VAE(nn.Module):
     def __init__(self, input_dim=784, hidden_dim=400, latent_dim=20):
         super(VAE, self).__init__()
@@ -22,6 +20,7 @@ class VAE(nn.Module):
         return self.fc2_mean(h), self.fc2_logvar(h)
     
     def reparameterize(self, mu, logvar):
+        # this section will force mu and logvar to tend towards the mean and logvar of a standard normal distribution
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
         return mu + eps*std

@@ -7,6 +7,9 @@ from model import VAE
 
 
 def loss_function(recon_x, x, mu, logvar):
+    # BCE makes sure the VAE reconstructs the images well.
+    # KLD ensures the latent space has a structure similar to a Gaussian distribution, making it useful for generative tasks.
+    # https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
     BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
     KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
     return BCE + KLD
